@@ -8,13 +8,16 @@
     <script src="script.js"></script>
 </head>
 <body>
+    <div align="center">
+        <form id="form">
+            <input id="myInput" type="text" name="country" placeholder="kg" minlength="2" required autofocus>
+            <button id="myButton">Search</button>
+        </form>
+    </div>
     <div class="row justify-content-center">
-        <div class="col col-lg-7" id="countries">
-            <form id="form">
-                <input type="text" name="country" placeholder="kg" minlength="2" required autofocus>
-                <button type="button" onclick="getCountry()">Search</button>
-            </form>
+        <div class="col col-lg-3" id="countries">
         </div>
     </div>
+
 </body>
 </html>

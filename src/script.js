@@ -28,10 +28,11 @@ function createCountry(country) {
 }
 
 function addCountry(elem) {
-    document.getElementById("countries").appendChild(elem);
+    document.getElementById("countries").insertBefore(elem,document.getElementById("countries").firstChild);
 }
 
-async function getCountry() {
+async function getCountry(event) {
+    event.preventDefault();
     const countryForm = document.getElementById("form");
     let data = new FormData(countryForm);
     let input = data.get("country");
@@ -39,17 +40,20 @@ async function getCountry() {
     if (response.ok) { // если HTTP-статус в диапазоне 200-299
         // получаем тело ответа (см. про этот метод ниже)
         let countryJson = await response.json();
-        let country = new Country(countryJson[0].name,countryJson[0].capital,countryJson[0].flag,
-                countryJson[0].currencies[0].name, countryJson[0].region);
-        let elem = createCountry(country);
-        addCountry(elem);
+        for (let i=0; i<countryJson.length; i++){
+            let country = new Country(countryJson[i].name,countryJson[i].capital,countryJson[i].flag,
+                    countryJson[i].currencies[0].name, countryJson[i].region);
+            let elem = createCountry(country);
+            addCountry(elem);
+        }
+        countryForm.reset();
+        document.getElementById("myInput").focus();
     } else {
+        countryForm.reset();
         alert("Country not found, try again");
+        document.getElementById("myInput").focus();
     }
 }
-
-/*function checkForm() {
-    const countryForm = document.getElementById("form");
-    let data = new FormData(countryForm);
-    return data.get("country");
-}*/
+window.addEventListener("load",function f(){
+    document.getElementById("form").addEventListener("submit", getCountry);
+})
